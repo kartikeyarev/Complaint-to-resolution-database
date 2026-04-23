@@ -1,0 +1,74 @@
+ER DIAGRAM DESCRIPTION
+(Use this text to draw your diagram in Draw.io or Lucidchart)
+
+1. ENTITIES AND ATTRIBUTES:
+
+[Users]
+- user_id (PK)
+- full_name
+- email
+- role
+- created_at
+
+[Status]
+- status_id (PK)
+- status_name
+- is_final
+
+[State_Transitions]
+- transition_id (PK)
+- from_status_id (FK)
+- to_status_id (FK)
+- allowed_role
+
+[Complaints]
+- complaint_id (PK)
+- user_id (FK)
+- title
+- description
+- status_id (FK)
+- assigned_to (FK)
+- created_at
+- updated_at
+
+[Complaint_History]
+- log_id (PK)
+- complaint_id (FK)
+- changed_by (FK)
+- old_status_id (FK)
+- new_status_id (FK)
+- comments
+- changed_at
+
+
+2. RELATIONSHIPS (Lines to draw):
+
+Users to Complaints (Creator)
+- 1 User can create MANY Complaints.
+- Line from Users.user_id to Complaints.user_id (1:N)
+
+Users to Complaints (Assignee)
+- 1 User (Resolver) can be assigned to MANY Complaints.
+- Line from Users.user_id to Complaints.assigned_to (1:N)
+
+Status to Complaints
+- 1 Status can belong to MANY Complaints.
+- Line from Status.status_id to Complaints.status_id (1:N)
+
+Status to State_Transitions
+- 1 Status can have MANY transitions (Both as FROM and TO).
+- Line from Status.status_id to State_Transitions.from_status_id (1:N)
+- Line from Status.status_id to State_Transitions.to_status_id (1:N)
+
+Complaints to Complaint_History
+- 1 Complaint can have MANY History Logs.
+- Line from Complaints.complaint_id to Complaint_History.complaint_id (1:N)
+
+Users to Complaint_History
+- 1 User can generate MANY History Logs (by making changes).
+- Line from Users.user_id to Complaint_History.changed_by (1:N)
+
+Status to Complaint_History
+- 1 Status can appear in MANY History Logs (as old or new status).
+- Line from Status.status_id to Complaint_History.old_status_id (1:N)
+- Line from Status.status_id to Complaint_History.new_status_id (1:N)
